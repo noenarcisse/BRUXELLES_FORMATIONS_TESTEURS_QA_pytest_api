@@ -1,32 +1,29 @@
 import requests
 import pytest
+import helpers
 
 from constants import BASE_URL, TO
+
+d : dict = {
+    "a": 1,
+    "b": "salut"  
+}
+
 
 def test_events_struct_ok() :
     res = requests.get(BASE_URL+"events", timeout=TO)
 
     eventStruct = {
-        "id": 0,
-        "title": "string",
+        "id"         : 0,
+        "title"      : "string",
         "description": "string",
-        "city": "string",
-        "venue": "string",
-        "starts_at": "string",
-        "capacity": 0,
-        "status": "string",
+        "city"       : "string",
+        "venue"      : "string",
+        "starts_at"  : "string",
+        "capacity"   : 0,
+        "status"     : "string",
         "cover_color": "string"
     }
-    
-    def hasSameKeys(a : dict, b : dict) -> bool :
-        keys : list[str] = list(a.keys())
-        keys2 : list[str] = b.keys()
-
-        for k in keys2 :
-            if not k in keys : return False
-            keys.remove(k)
-        return len(keys) == 0 
-
 
     assert res.status_code == 200, "Allo ?"
     assert res.headers["content-type"].startswith("application/json")
@@ -34,7 +31,7 @@ def test_events_struct_ok() :
     content = res.json()
 
     assert len(content) > 0, "C'est vide ?"
-    assert hasSameKeys(eventStruct, content[0]) == True
+    assert helpers.hasSameKeys(eventStruct, content[0]) == True
 
 def test_events_not_empty_list() :
     res = requests.get(BASE_URL+"events", timeout=TO)
@@ -50,7 +47,13 @@ def test_events_not_empty_list() :
             ("a", 422),
             ("99999", 404)
         ],
-        ids=["str vide", "moinsun -> 404", "events/a -> 422", "events/9999 -> 404"]               
+        ids=
+            [
+                "       str vide", 
+                "       moinsun -> 404", 
+                "       events/a -> 422", 
+                "       events/9999 -> 404"
+            ]               
 )
 def test_events_badrequests(id, expected_code) :
     res = requests.get(BASE_URL+"events/"+id, timeout=TO)
@@ -81,7 +84,7 @@ def test_events_capacity_natural() :
 
 def test_event_by_id() :
     id = 1
-    res = requests.get(BASE_URL+"events/"+str(id))
+    res = requests.get(BASE_URL+"events/"+str(id), timeout=TO)
     assert res.status_code == 200
     event = res.json()
 
@@ -97,12 +100,19 @@ def test_events_city_ok() :
     for e in events :
         assert e["city"] == "Bruxelles"
 
-pytest.mark.parametrize(
+@pytest.mark.parametrize(
     "city",
     [
         ("Bruxelle"),
+        ("bruxelles"),
         ("Paris"),
         ("1")
+    ],
+    ids = [
+        "       Bruxelles sans S",
+        "       Bruxelles mais en minuscules",
+        "       Bruxelles mais en France",
+        "       Un"
     ]
 )
 def test_events_city_notfound(city) :
@@ -123,6 +133,11 @@ def test_events_q_ok() :
         title : str = e["title"]
         assert "qa" in title.lower()
 
+def test_events_empty_q() :
+    res = requests.get(BASE_URL+"events?q=qa")
+    assert res.status_code == 200
+    assert len(res.json()) > 0
+
 def test_events_q_nofin() :
     res = requests.get(BASE_URL+"events?q=darksouls4")
 
@@ -138,3 +153,17 @@ def test_events_all_published() :
     events = res.json()
     notpub = [e for e in events if e["status"] != "published"]
     assert len(notpub) == 0
+
+
+def test_events_q_found() :
+    res = requests.get(BASE_URL+"events", timeout=TO)
+    events = res.json()
+
+    assert len(events) > 0, "NOOOOOOON aucun event test annulé"
+
+    w = events[0]["title"].split()[0]
+
+    res2 = requests.get(BASE_URL+"events?q="+w, timeout=TO)
+    found = res2.json()
+    
+    assert events[0]["id"] in [e["id"] for e in found]
