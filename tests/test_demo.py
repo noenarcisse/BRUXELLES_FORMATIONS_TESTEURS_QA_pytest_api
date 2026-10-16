@@ -1,7 +1,8 @@
 # warm up pour reprendre un peu de snek
 
-import requests
 import pytest
+import requests
+from jsonschema import validate
 
 url = "http://localhost:8000"
 res = requests.get(f"{url}/api/events", timeout=5)
@@ -22,3 +23,22 @@ def test_recupTousLesElements() :
 @pytest.mark.skip
 def test_askip():
     assert False == False
+
+
+def test_schema() :
+
+    schema = {
+        "type" : "object",
+        "required" : ["id", "title"],
+        "properties" : {
+            "id" : {"type" : "integer", "minimum" : 0},
+            "title" : {"type" : "string"}
+        }
+    }
+
+    obj = {
+        "id" : 42,
+        "title" : "Harry Potté"
+    }
+
+    validate(obj, schema=schema)

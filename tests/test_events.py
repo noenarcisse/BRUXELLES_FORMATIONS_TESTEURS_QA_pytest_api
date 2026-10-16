@@ -9,8 +9,8 @@ d : dict = {
 }
 
 
-def test_events_struct_ok() :
-    res = requests.get(BASE_URL+"events", timeout=TO)
+def test_events_struct_ok(baseurl) :
+    res = requests.get(f"{baseurl}events", timeout=TO)
 
     eventStruct = {
         "id"         : 0,
