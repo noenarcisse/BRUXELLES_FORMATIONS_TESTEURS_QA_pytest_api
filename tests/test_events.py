@@ -59,7 +59,7 @@ def test_events_badrequests(id, expected_code) :
     res = requests.get(BASE_URL+"events/"+id, timeout=TO)
     assert res.status_code == expected_code
 
-def test_events_id_are_unique() :
+def test_events_ids_are_unique() :
     """
     Test que les IDs des events n'apparaissent jamais en doublon
     """
@@ -90,7 +90,7 @@ def test_event_by_id() :
 
     assert event["id"] == id
 
-# citie param
+# cities param
 def test_events_city_ok() :
     res = requests.get(BASE_URL+"events?city=Bruxelles")
     assert res.status_code == 200
