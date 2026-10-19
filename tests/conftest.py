@@ -1,11 +1,9 @@
 import os
-import requests
 
 from constants import BASE_URL, TO
 from dotenv import load_dotenv
-from pytest import fixture as f
-
 from helpers import login
+from pytest import fixture as f
 
 load_dotenv()
 
