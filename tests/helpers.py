@@ -22,3 +22,17 @@ def getAllEvents() -> list[dict] :
     events = res.json()
     assert len(events) > 0, "Events list is empty, test aborted"
     return events
+
+def login(email : str, password : str, baseurl : str) -> str :
+    payload = {
+        "username" : email,
+        "password" : password
+    }
+    res = requests.post(f"{baseurl}auth/token", data=payload)
+    assert res.status_code == 200, res.text
+
+    jason : dict = res.json()
+    token : str = jason.get("access_token")
+    assert  token != None
+
+    return token

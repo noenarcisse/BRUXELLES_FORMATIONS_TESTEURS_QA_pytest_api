@@ -9,6 +9,7 @@
         "capacity", 
         "status"
     ],
+    "additionalProperties" : false,
     "properties" : {
         "id" : {
             "type" : "integer", "minimum" : 0
@@ -26,7 +27,8 @@
             "type" : "string"
         },
         "starts_at" : {
-            "type" : "string"
+            "type" : "string",
+            "format" : "date-time"
         },
         "capacity" : {
             "type" : "integer", "minimum" : 0
@@ -37,6 +39,12 @@
         "cover_color" : {
             "type" : "string",
             "pattern" : "^#([A-Fa-f0-9]{6}$)$"
+        },
+        "categories" : {
+            "type" : "array"
+        },
+        "available" : {
+            "type" : "integer"
         }
     }
 }
