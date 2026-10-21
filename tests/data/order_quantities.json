@@ -1,0 +1,121 @@
+[
+    {
+        "cmd": {
+            "event_id": "1",
+            "items": [
+                {
+                    "category_id": 1,
+                    "quantity": 1
+                }
+            ]
+        },
+        "code": 201
+    },
+    {
+        "cmd": {
+            "event_id": "1",
+            "items": [
+                {
+                    "category_id": 1,
+                    "quantity": 6
+                }
+            ]
+        },
+        "code": 201
+    },
+    {
+        "cmd": {
+            "event_id": "1",
+            "items": [
+                {
+                    "category_id": 1,
+                    "quantity": 7
+                }
+            ]
+        },
+        "code": 400
+    },
+    {
+        "cmd": {
+            "event_id": "1",
+            "items": [
+                {
+                    "category_id": 1,
+                    "quantity": 0
+                }
+            ]
+        },
+        "code": 400
+    },
+    {
+        "cmd": {
+            "event_id": "10",
+            "items": [
+                {
+                    "category_id": 1,
+                    "quantity": 5
+                }
+            ]
+        },
+        "code": 409
+    },
+    {
+        "cmd": {
+            "event_id": "10",
+            "items": [
+                {
+                    "category_id": 1,
+                    "quantity": 5
+                }
+            ],
+            "promo_code" : "EXPIRED"
+        },
+        "code": 400
+    },
+    {
+        "cmd": {
+            "event_id": "10",
+            "items": [
+                {
+                    "category_id": 1,
+                    "quantity": 5
+                }
+            ],
+            "promo_code" : "SALUT"
+        },
+        "code": 404
+    },
+    {
+        "cmd": {
+            "event_id": "10",
+            "items": [
+                {
+                    "category_id": 1,
+                    "quantity": "B"
+                }
+            ]
+        },
+        "code": 422
+    },
+        {
+        "cmd": {
+            "event_id": "10",
+            "items": [
+                {
+                    "category_id": 1,
+                    "quantity": 2
+                },
+                {
+                    "category_id": 2,
+                    "quantity": 4
+                },
+                {
+                    "category_id": 3,
+                    "quantity": 1
+                }
+            ],
+            "promo_code" : "WELCOME10"
+        },
+        "code": 400
+    }
+]

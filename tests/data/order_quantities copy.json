@@ -1,0 +1,29 @@
+
+[
+    {
+        "quantite" : 1,
+        "status"   : 201,
+        "raison"   : ""
+    },
+    {
+        "quantite" : 6,
+        "status"   : 201,
+        "raison"   : ""
+    },
+    {
+        "quantite" : 7,
+        "status"   : 400,
+        "raison"   : "max 6 tickets"
+    },
+    {
+        "quantite" : 0,
+        "status"   : 400,
+        "raison"   : "min 1 ticket"
+    },
+    {
+        "quantite" : -1,
+        "status"   : 400,
+        "raison"   : "min 1 ticket"
+    },
+
+]

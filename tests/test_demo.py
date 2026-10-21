@@ -88,3 +88,9 @@ def test_connecteMooooooi(auth_header_client, baseurl) :
 
     assert "full_name" in content
     assert content["full_name"] == "Camille Client"
+
+
+def test_smol(small_event) : 
+    e = small_event
+
+    assert e["city"] == "Bruxelles"
