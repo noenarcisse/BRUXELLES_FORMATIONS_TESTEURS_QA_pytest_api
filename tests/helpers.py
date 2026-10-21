@@ -47,15 +47,15 @@ def getEventsWithAvailability(baseurl : str, events : list[dict], available : in
 
     for id in eventids :
         res = requests.get(f"{baseurl}events/{id}", timeout=5)
-        assert res.status_code == 20, res.text
+        assert res.status_code == 200, res.text
         event = res.json()
 
-        if event["status"] != "pusblished" : continue
+        if event["status"] != "published" : continue
         if event["available"] < available : continue
         if len(event["categories"]) <= 0 : continue
 
         for c in event["categories"] :
-            if c["availaible"] >= available :
+            if c["available"] >= available :
                 eventswith6.append(event)
             
     return eventswith6

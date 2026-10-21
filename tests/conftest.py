@@ -17,8 +17,8 @@ def timeout() : return os.getenv("TIMEOUT", TO)
 def all_events() : return getAllEvents()
 
 @f 
-def events_with_available(available : int, baseurl, all_events) : 
-    return getEventsWithAvailability(baseurl, all_events, available)
+def events_with_6_available(baseurl, all_events) : 
+    return getEventsWithAvailability(baseurl, all_events, 6)
 
 @f(scope="session")
 def auth_header_client(baseurl) :

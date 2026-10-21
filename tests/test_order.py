@@ -1,12 +1,14 @@
 import requests
+from helpers import getEventsWithAvailability
 
 
-def test_event6billets(baseurl, all_events, events_with_available) :
-    eventswith6 = events_with_available(6, baseurl, all_events)
+def test_event6billets(events_with_6_available) :
+    print(events_with_6_available)
+    eventswith6 = events_with_6_available
     assert len(eventswith6) > 0
 
-def test_commander2billets(auth_header_client, baseurl, all_events, events_with_available) :
-    eventswith2 = events_with_available(baseurl, all_events, 2)
+def test_commander2billets(auth_header_client, baseurl, all_events) :
+    eventswith2 = getEventsWithAvailability(baseurl, all_events, 2)
 
     if len(eventswith2) >= 0 : return
 
