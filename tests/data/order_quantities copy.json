@@ -24,6 +24,6 @@
         "quantite" : -1,
         "status"   : 400,
         "raison"   : "min 1 ticket"
-    },
+    }
 
 ]
