@@ -1,7 +1,6 @@
-import requests
-import pytest
 import helpers
-
+import pytest
+import requests
 from constants import BASE_URL, TO
 
 d : dict = {
@@ -10,8 +9,8 @@ d : dict = {
 }
 
 
-def test_events_struct_ok() :
-    res = requests.get(BASE_URL+"events", timeout=TO)
+def test_events_struct_ok(baseurl) :
+    res = requests.get(f"{baseurl}events", timeout=TO)
 
     eventStruct = {
         "id"         : 0,
@@ -49,10 +48,10 @@ def test_events_not_empty_list() :
         ],
         ids=
             [
-                "       str vide", 
-                "       moinsun -> 404", 
-                "       events/a -> 422", 
-                "       events/9999 -> 404"
+                "str vide", 
+                "moinsun -> 404", 
+                "events/a -> 422", 
+                "events/9999 -> 404"
             ]               
 )
 def test_events_badrequests(id, expected_code) :
@@ -82,13 +81,26 @@ def test_events_capacity_natural() :
 
 # events/{id}
 
-def test_event_by_id() :
-    id = 1
-    res = requests.get(BASE_URL+"events/"+str(id), timeout=TO)
-    assert res.status_code == 200
+@pytest.mark.parametrize("id, code, exp",
+    [
+        (1,200, 1),
+        (99999, 404, "Event not found"),
+        (0,     404, "Event not found"),
+        ("a",   422, "integer"),
+        ("1.5", 422, "integer")
+    ]
+)
+def test_event_by_id(id, code, exp) :
+    res = requests.get(f"{BASE_URL}events/{id}", timeout=TO)
+    assert res.status_code == code
     event = res.json()
 
-    assert event["id"] == id
+    if code == 200 :
+        assert event["id"] == exp
+    if code == 404 :
+        assert event["detail"] == exp , res.text
+    if code == 422 :
+        assert "integer" in event["detail"][0]["msg"]
 
 # cities param
 def test_events_city_ok() :
@@ -109,16 +121,17 @@ def test_events_city_ok() :
         ("1")
     ],
     ids = [
-        "       Bruxelles sans S",
-        "       Bruxelles mais en minuscules",
-        "       Bruxelles mais en France",
-        "       Un"
+        "Bruxelles sans S",
+        "Bruxelles mais en minuscules",
+        "Bruxelles mais en France",
+        "Un"
     ]
 )
 def test_events_city_notfound(city) :
     res = requests.get(BASE_URL+"events?city="+city)
     assert res.status_code == 200
     assert len(res.json()) == 0
+
 
 # Q param
 
@@ -133,16 +146,28 @@ def test_events_q_ok() :
         title : str = e["title"]
         assert "qa" in title.lower()
 
-def test_events_empty_q() :
-    res = requests.get(BASE_URL+"events?q=qa")
+def test_q_casesensitive():
+    res = requests.get(BASE_URL+"events?q=QA")
     assert res.status_code == 200
-    assert len(res.json()) > 0
+    events = res.json() 
+
+    for e in events : 
+        assert "QA" in e["title"].upper()
+
+
+def test_events_empty_q() :
+    res = requests.get(BASE_URL+"events?q=")
+    assert res.status_code == 200
+    assert len(res.json()) != 0
 
 def test_events_q_nofin() :
     res = requests.get(BASE_URL+"events?q=darksouls4")
 
     assert res.status_code == 200
     assert len(res.json()) == 0
+
+
+
 
 # published only
 
