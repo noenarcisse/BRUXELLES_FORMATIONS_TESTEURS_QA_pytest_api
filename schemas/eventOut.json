@@ -1,0 +1,49 @@
+{
+    "type" : "object",
+    "required" : [
+        "id", 
+        "title", 
+        "description", 
+        "city", 
+        "starts_at", 
+        "capacity", 
+        "status"
+    ],
+    "additionalProperties" : false,
+    "properties" : {
+        "id" : {
+            "type" : "integer", "minimum" : 0
+        },
+        "title": {
+            "type" : "string"
+        },
+        "description" : {
+            "type" : "string"
+        },
+        "city" : {
+            "type" : "string"
+        },
+        "venue" : {
+            "type" : "string"
+        },
+        "starts_at" : {
+            "type" : "string"
+        },
+        "capacity" : {
+            "type" : "integer", "minimum" : 0
+        },
+        "status" : {
+            "type" : "string"
+        },
+        "cover_color" : {
+            "type" : "string",
+            "pattern" : "^#([A-Fa-f0-9]{6})$"
+        },
+        "categories" : {
+            "type" : "array"
+        },
+        "available" : {
+            "type" : "integer"
+        }
+    }
+}
